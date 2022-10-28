@@ -1,0 +1,9 @@
+/server/src/data-source.ts
+/server/.env.development
+/client/node_modules
+/client/.next
+/client/node_modules
+/server/node_modules
+/client/.env.development
+/client/.env.production
+/server/.env.production
