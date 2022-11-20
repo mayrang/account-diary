@@ -5,18 +5,20 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { AppDataSource } from "./data-source";
 
+import userRoutes from "./routes/user";
+
 const app = express();
 
 dotenv.config();
 app.use(express.json());
 app.use(morgan("dev"));
-
-
 app.use(cors({
     origin: ["http://localhost:3000"],
     credentials: true
 }));
 app.use(cookieParser());
+
+app.use("/api/user", userRoutes);
 
 let port = 4000;
 
