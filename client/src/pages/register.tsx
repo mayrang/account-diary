@@ -1,8 +1,11 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Header from "../components/Header";
+import { asyncUserRegister } from "../redux/reducers/userSlice";
+import { AppDispatch, useAppDispatch, useAppSelector } from "../redux/store";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -10,7 +13,19 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [checkPassword, setCheckPassword] = useState("");
     const router = useRouter();
+    const dispatch = useAppDispatch();
+    const {registerError, registerDone} = useAppSelector((state) => state.user);
 
+
+    useEffect(() => {
+        if(registerDone){
+            router.push("/");
+        }
+        if(registerError){
+            alert(registerError);
+            return;
+        }
+    }, [registerDone, registerError])
 
     const handleSubmit = async (e:FormEvent) => {
         e.preventDefault();
@@ -30,19 +45,26 @@ const Register = () => {
             alert("비밀번호와 비밀번호 확인의 값이 동일하지 않습니다");
             return;
         }
-        try{
-            const result = await axios.post("/user/register", {
-                email,
-                nickname,
-                password,
-                checkPassword,
-            });
-            router.push("/");
-        }catch(err:any){
-            console.log(err)
-            alert(err.response?.data?.error || err.response?.data?.email ||  err.response?.data?.nickname || err.response?.data?.password || "회원가입 에러");
-            return;
+        const data = {
+            email,
+            nickname,
+            password,
+            checkPassword,
         }
+        dispatch(asyncUserRegister(data));
+        // try{
+        //     const result = await axios.post("/user/register", {
+        //         email,
+        //         nickname,
+        //         password,
+        //         checkPassword,
+        //     });
+        //     router.push("/");
+        // }catch(err:any){
+        //     console.log(err)
+        //     alert(err.response?.data?.error || err.response?.data?.email ||  err.response?.data?.nickname || err.response?.data?.password || "회원가입 에러");
+        //     return;
+        // }
         
     }
 
@@ -69,8 +91,8 @@ const Register = () => {
                         <label htmlFor="checkPassword" className="ml-1 font-semibold">비밀번호 확인</label>
                         <input id="checkPassword" type="password" className="mt-2 bg-gray-50 border rounded p-1" placeholder="비밀번호 확인" value={checkPassword} onChange={(e) => setCheckPassword(e.target.value)}/>
                     </div>
-                    <div className="flex flex-col  items-end">
-                        <button type="submit" className="mt-5 p-2 border rounded bg-white">회원가입</button>
+                    <div className="flex flex-col  items-end mt-5">
+                        <button type="submit" className=" p-2 border rounded bg-white hover:bg-blue-500 hover:text-white">회원가입</button>
                         <Link className=" text-xs text-blue-500 mt-3 mr-1 hover:text-gray-900 hover:underline" href="/login">로그인 하러 가기</Link>
                     </div>
                 </form>
