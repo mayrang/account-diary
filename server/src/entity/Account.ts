@@ -30,7 +30,7 @@ export class Account extends BaseEntity {
 
     @Expose()
     get typeValue():number{
-        if(this.type === "spend"){
+        if(this.type === "spending"){
             return this.value * -1;
         }else if(this.type === "income"){
             return this.value;

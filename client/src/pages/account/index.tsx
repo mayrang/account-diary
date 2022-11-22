@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import Header from "../../components/Header";
 
@@ -47,9 +48,9 @@ const AccountList = () => {
                 <div className="h-10">hello</div>
                 <div className="h-10">hello</div>
             </div>
-            <button className="fixed right-5  bottom-3  md:right-1/4  border p-3 bg-white rounded">
+            <Link href={"/account/create"} className="fixed right-5  bottom-3  md:right-1/4  border p-3 bg-white rounded">
                 추가하기
-            </button>
+            </Link>
             
         </div>
         
