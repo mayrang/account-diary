@@ -1,10 +1,36 @@
-import React, { FormEvent, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+
+import { asyncAddSinglePost } from "../../redux/reducers/accoutSlice";
+import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
+import wrapper, { useAppDispatch, useAppSelector } from "../../redux/store";
 
 const AccountCreate = () => {
     const [value, setValue] = useState("");
     const [type, setType] = useState("");
+    const [content, setContent] = useState("");
+    const {user} = useAppSelector((state) => state.user);
+    const {addSingleAccountDone, addSingleAccountError} = useAppSelector((state) => state.account);
     const spendingRef = useRef<HTMLInputElement>(null);
     const incomeRef = useRef<HTMLInputElement>(null);
+    const dispatch = useAppDispatch();
+    const router =  useRouter();
+
+    useEffect(() => {
+        if(!user){
+            alert("로그인을 해주세요");
+            router.replace("/login");
+        }
+        if(addSingleAccountDone){
+            router.replace("/account");
+        }
+        if(addSingleAccountError){
+            alert(addSingleAccountError);
+            return;
+        }
+    }, [addSingleAccountDone, addSingleAccountError, user]);
+
+    
 
     const handleType = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.name === "spending"){
@@ -34,6 +60,23 @@ const AccountCreate = () => {
     const handleSubmit = (e:FormEvent) => {
         e.preventDefault();
         console.log(type, value)
+        if(content.trim() === ""){
+            alert("내용을 입력해주세요");
+            return;
+
+        }else if(value.trim() === ""){
+            alert("금액을 입력해주세요");
+            return;
+        }else if(isNaN(Number(value))){
+            alert("금액에는 숫자만 입력할 수 있습니다!");
+            return;
+        }
+        const data = {
+            type,
+            value,
+            content
+        }
+        dispatch(asyncAddSinglePost(data));
     }
 
 
@@ -54,10 +97,14 @@ const AccountCreate = () => {
                         </div>
                     </div>
                     <div className="mt-5 flex flex-col">
+                        <label htmlFor="content" className="text-lg font-semibold">내용</label>
+                        <input  id="content" className="mt-2 p-2 border bg-gray-50 rounded" placeholder="내용을 입력해주세요" value={content} onChange={(e) => setContent(e.target.value)}/>
+                    </div>
+                    <div className="mt-5 flex flex-col">
                         <label htmlFor="value" className="text-lg font-semibold">금액</label>
                         <input  id="value" className="mt-2 p-2 border bg-gray-50 rounded" placeholder="금액을 입력해주세요" value={value} onChange={(e) => setValue(e.target.value)}/>
                     </div>
-                    <div className="flex justify-end items-center mt-6 md:mt-3">
+                    <div className="flex justify-end items-center mt-4 md:mt-3">
                         <button type="submit" className="py-2 px-4 border bg-white rounded">등록</button>
                     </div>
 
@@ -68,5 +115,20 @@ const AccountCreate = () => {
         </div>
     );
 };
+
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({req}) => {
+
+    const cookie = req.headers.cookie;
+    console.log("cookie", typeof(cookie))
+    if(cookie){
+        await store.dispatch(asyncUserLoadMyInfo(cookie))
+    }
+    return {
+        props: {}
+    }
+
+    
+})
 
 export default AccountCreate;

@@ -27,7 +27,7 @@ const Register = () => {
         }
     }, [registerDone, registerError])
 
-    const handleSubmit = async (e:FormEvent) => {
+    const handleSubmit = (e:FormEvent) => {
         e.preventDefault();
         if(email.trim() === ""){
             alert("이메일을 비워둘 수 없습니다.");

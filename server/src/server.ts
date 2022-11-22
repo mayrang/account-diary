@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { AppDataSource } from "./data-source";
 
 import userRoutes from "./routes/user";
+import accountRoutes from "./routes/account";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cors({
 app.use(cookieParser());
 
 app.use("/api/user", userRoutes);
+app.use("/api/account", accountRoutes);
 
 let port = 4000;
 

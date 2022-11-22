@@ -23,7 +23,7 @@ const Login = () => {
     },[loginDone, loginError])
 
 
-    const handleSubmit = async (e:FormEvent) => {
+    const handleSubmit =  (e:FormEvent) => {
         e.preventDefault();
         if(email.trim() === ""){
             alert("이메일은 비워둘 수 없습니다.");

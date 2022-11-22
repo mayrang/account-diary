@@ -1,10 +1,12 @@
 import {combineReducers, CombinedState, AnyAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import { HYDRATE } from "next-redux-wrapper";
+import accountSlice, { AccountState } from "./accoutSlice";
 import userSlice, { UserState } from "./userSlice";
 
 export interface RootStates {
-    user: UserState
+    user: UserState,
+    account: AccountState,
 }
 
 axios.defaults.baseURL = "http://localhost:4000/api";
@@ -16,7 +18,8 @@ const rootReducer = (state:RootStates, action:AnyAction):CombinedState<RootState
             return action.payload;
         default: {
             const combineReducer = combineReducers({
-                user: userSlice.reducer
+                user: userSlice.reducer,
+                account: accountSlice.reducer,
             });
             return combineReducer(state, action)
         }
