@@ -4,8 +4,9 @@ import { User } from "../entity/User";
 
 export const userMiddleware = async (req:Request, res:Response, next:NextFunction) => {
     try{
+       
         const token = req.cookies.token;
-      
+
         if(!token) return res.status(400).json({error: "유저 식별 토큰이 없습니다."});
         const {email}:any = jwt.verify(token, process.env.JWT_SECRET_KEY);  
 

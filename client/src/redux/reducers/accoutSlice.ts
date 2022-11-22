@@ -54,6 +54,28 @@ export const asyncAddSinglePost = createAsyncThunk(
             return rejectWithValue(err.response?.data?.error || "텅장 추가 에러");
         }
     }
+);
+
+export const asyncLoadAccountList = createAsyncThunk(
+    'account/asyncLoadAccountList',
+    async ({year, month, cookie}:{year:string; month:string; cookie:string|undefined}, {rejectWithValue}) => {
+        try{
+            const result = await axios.get("account/loadList", {
+                params: {
+                    year,
+                    month
+                },
+                headers: {
+                    cookie
+                }
+            });
+            return result.data;
+
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "텅장 목록 에러");
+        }
+    }
 )
 
 const accountSlice = createSlice({
@@ -77,6 +99,22 @@ const accountSlice = createSlice({
             state.addSingleAccountError = action.payload;
 
         });
+        builder.addCase(asyncLoadAccountList.pending, (state, action) => {
+            state.loadAccountListDone = false;
+            state.loadAccountListLoading = true;
+            state.loadAccountListError = null;
+        });
+        builder.addCase(asyncLoadAccountList.fulfilled, (state, action) => {
+            state.loadAccountListLoading = false;
+            state.loadAccountListDone = true;
+            state.loadAccountListError = null;
+            state.accountList = action.payload;
+        });
+        builder.addCase(asyncLoadAccountList.rejected, (state, action) => {
+            state.loadAccountListLoading = false;
+            state.loadAccountListDone = false;
+            state.loadAccountListError = action.payload;
+        })
     }
 });
 

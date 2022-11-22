@@ -1,4 +1,6 @@
+import { instanceToPlain } from "class-transformer";
 import { Request, Response, Router } from "express";
+import { Between } from "typeorm";
 import { Account } from "../entity/Account";
 import { userMiddleware } from "../middlewares/user";
 
@@ -25,6 +27,31 @@ router.post("/create", userMiddleware, async (req:Request, res:Response) => {
     }catch(err){
         console.log(err);
         return res.status(500).json({error: "텅장 생성 과정에서 서버 에러"});
+    }
+});
+
+router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
+
+    const {year, month} = req.query;
+    try{
+        const user = res.locals.user;
+        if(!user) return res.status(400).json({error: "유저 정보가 없습니다."})
+        if(isNaN(Number(year)) || isNaN(Number(month))) return res.status(400).json({error: "query string 에러"});
+
+        const accountList = await Account.find({
+            where: {
+                createAt: Between(
+                    new Date(parseInt(year as string), parseInt(month as string)-1, 1),
+                    new Date(parseInt(year as string), parseInt(month as string), 0),
+                ),
+                userId: user.userId
+            }
+        });
+        console.log(instanceToPlain(accountList));
+        return res.status(200).send(instanceToPlain(accountList));
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({error: "텅장 목록 가져오는 과정에서 서버 에라"});
     }
 });
 
