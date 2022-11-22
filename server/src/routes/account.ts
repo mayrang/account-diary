@@ -48,6 +48,7 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
             }
         });
         console.log(instanceToPlain(accountList));
+        // expose 포함 시키고 싶을때는 find 후 instanceToPlain
         return res.status(200).send(instanceToPlain(accountList));
     }catch(err){
         console.log(err);
