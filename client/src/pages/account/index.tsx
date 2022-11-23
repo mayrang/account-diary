@@ -1,11 +1,21 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Header from "../../components/Header";
 import wrapper, { useAppSelector } from "../../redux/store";
 import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
-import { asyncLoadAccountList } from "../../redux/reducers/accoutSlice";
+import {  asyncLoadAccountList } from "../../redux/reducers/accoutSlice";
+
+type AccountList = {
+    accountId: number;
+    value: number;
+    createAt: Date;
+    content: string;
+    type: string;
+    userId: number;
+    typeValue: number;
+}
 
 const AccountList = () => {
     const router = useRouter();
@@ -16,6 +26,17 @@ const AccountList = () => {
     // 년도와 월을 표시하기 위한 변수
     const calendarYear = year||dayjs().format("YYYY");
     const calendarMonth = month||dayjs().format("MM");
+    const [balance, setBalance] = useState(0);
+
+    useEffect(() => {
+        let total = 0;
+        accountList.forEach((item:any) => {
+
+            total += item.typeValue 
+        })
+        console.log(total)
+        setBalance(total);
+    }, [accountList]);
 
     useEffect(() => {
         if(!user){
@@ -79,6 +100,9 @@ const AccountList = () => {
                     <div onClick={clickPrev}  className="text-2xl">{"<"}</div>
                     <div  className="text-2xl md:pr-1 ">{calendarYear}년 {calendarMonth}월</div>
                     <div onClick={clickNext} className="text-2xl">{">"}</div>
+                </div>
+                <div className="text-lg">
+                    잔액 : {balance}
                 </div>
                 {accountList.map((it:any) => (
                     <div key={it.accountId}>
