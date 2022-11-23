@@ -30,9 +30,9 @@ const AccountList = () => {
 
     useEffect(() => {
         let total = 0;
-        accountList.forEach((item:any) => {
+        (accountList as AccountList[] | []).forEach(({typeValue}) => {
 
-            total += item.typeValue 
+            total += typeValue 
         })
         console.log(total)
         setBalance(total);
