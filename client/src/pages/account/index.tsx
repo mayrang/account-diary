@@ -8,7 +8,7 @@ import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
 import {  asyncLoadAccountList } from "../../redux/reducers/accoutSlice";
 import AccountCard from "../../components/AccountCard";
 
-export interface AccountList  {
+export interface AccountObject  {
     accountId: number;
     value: number;
     createAt: Date;
@@ -31,7 +31,7 @@ const AccountList = () => {
 
     useEffect(() => {
         let total = 0;
-        (accountList as AccountList[] | []).forEach(({typeValue}) => {
+        (accountList as AccountObject[] | []).forEach(({typeValue}) => {
 
             total += typeValue 
         })
@@ -109,7 +109,7 @@ const AccountList = () => {
                   <AccountCard key={it.accountId} data={it} /> 
                 ))}
             </div>
-            <Link href={"/account/create"} className="fixed right-5  bottom-3  md:right-1/4  border p-3 bg-white rounded">
+            <Link href={"/account/create"} className="fixed right-5  bottom-2  md:right-1/4  border p-3 bg-white rounded">
                 추가하기
             </Link>
             

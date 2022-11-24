@@ -1,8 +1,8 @@
 import React from "react";
-import { AccountList } from "../pages/account";
+import { AccountObject} from "../pages/account";
 import dayjs from "dayjs";
 import Link from "next/link";
-const AccountCard = ({data}:{data:AccountList}) => {
+const AccountCard = ({data}:{data:AccountObject}) => {
     return (
         <div className="p-3 border-b-4 w-full flex items-center justify-between ">
             <div className="flex flex-col">
@@ -12,7 +12,7 @@ const AccountCard = ({data}:{data:AccountList}) => {
             </div>
             <div className="flex items-center">
                 <button className="p-2 border rounded bg-white text-red-500">삭제</button>
-                <Link href={"/account/create"} className="p-2  ml-3 border rounded bg-white ">수정</Link>
+                <Link href={`/account/edit/${data.accountId}`} className="p-2  ml-3 border rounded bg-white ">수정</Link>
             </div>
            
             

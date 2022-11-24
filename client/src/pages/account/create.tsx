@@ -5,7 +5,7 @@ import wrapper from "../../redux/store";
 
 const AccountCreate = () => {
     return (
-        <AccountForm />
+        <AccountForm singleAccount={undefined}/>
     );
 
 };

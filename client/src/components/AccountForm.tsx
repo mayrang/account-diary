@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { AccountObject } from "../pages/account";
 
 import { asyncAddSinglePost } from "../redux/reducers/accoutSlice";
 
@@ -7,10 +8,12 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 
 
 
-const AccountForm = () => {
-    const [value, setValue] = useState("");
-    const [type, setType] = useState("");
-    const [content, setContent] = useState("");
+const AccountForm = ({singleAccount}: {
+    singleAccount: AccountObject | undefined | null
+}) => {
+    const [value, setValue] = useState(singleAccount?.value.toString()||"");
+    const [type, setType] = useState(singleAccount?.type||"");
+    const [content, setContent] = useState(singleAccount?.content||"");
     const {user} = useAppSelector((state) => state.user);
     const {addSingleAccountDone, addSingleAccountError} = useAppSelector((state) => state.account);
     const spendingRef = useRef<HTMLInputElement>(null);
@@ -84,7 +87,7 @@ const AccountForm = () => {
    
     return (
         <div className="w-full h-screen bg-gray-200 flex justify-center items-center">
-            <div className="bg-white p-6 border rounded shadow-2xl w-10/12 md:w-6/12 h-2/4">
+            <div className="bg-white p-6 border rounded shadow-2xl w-10/12 md:w-6/12 h-auto">
                 <form onSubmit={handleSubmit}>
                     <h2 className="text-xl font-extrabold">텅장 추가</h2>
                     <div className="mt-7 flex flex-col">

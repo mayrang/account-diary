@@ -60,4 +60,25 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
     }
 });
 
+router.get("/loadSingle/:accountId", userMiddleware, async (req:Request, res:Response) => {
+    const {accountId} = req.params;
+    try{
+        const user = res.locals.user;
+        if(!accountId || accountId.trim() === "" || isNaN(Number(accountId))) return res.status(400).json({error: "올바른 파라미터값이 아닙니다."});
+        
+        const account = await Account.findOne({
+            where: {
+                accountId: parseInt(accountId)
+            }
+        });
+
+        if(account.userId !== user.userId) return res.status(400).json({error: "권한이 존재하지 않습니다."});
+        return res.json(account);
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({error: "텅장 가져오는 과정에서 서버 에러"});
+    }
+})
+
 export default router;

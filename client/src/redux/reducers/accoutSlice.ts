@@ -76,6 +76,40 @@ export const asyncLoadAccountList = createAsyncThunk(
             return rejectWithValue(err.response?.data?.error || "텅장 목록 에러");
         }
     }
+);
+
+export const asyncLoadSingleAccount = createAsyncThunk(
+    'account/asyncLoadSingleAccount',
+    async ({accountId, cookie}: {accountId:string|string[]; cookie:string}, {rejectWithValue}) => {
+        try{
+            const result = await axios.get(`account/loadSingle/${accountId}`, {
+                headers: {
+                    cookie
+                }
+            });
+            return result.data;
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "텅장 볼러오기 에러");
+        }
+    }
+);
+
+export const asyncRemoveSingleAccount = createAsyncThunk(
+    'account/asyncRemoveSingleAccount',
+    async ({accountId, cookie} : {accountId:string|string[]; cookie:string;}, {rejectWithValue}) => {
+        try{
+            const result = await axios.delete(`account/removeSingle/${accountId}`, {
+                headers: {
+                    cookie
+                }
+            });
+            return result.data;
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "텅장 삭제 실패");
+        }
+    }
 )
 
 const accountSlice = createSlice({
@@ -114,6 +148,37 @@ const accountSlice = createSlice({
             state.loadAccountListLoading = false;
             state.loadAccountListDone = false;
             state.loadAccountListError = action.payload;
+        });
+        builder.addCase(asyncLoadSingleAccount.pending, (state, action) => {
+            state.loadSingleAccountLoading = true;
+            state.loadAccountListDone = false;
+            state.loadSingleAccountError = null;
+        });
+        builder.addCase(asyncLoadSingleAccount.fulfilled, (state, action) => {
+            state.loadSingleAccountLoading = false;
+            state.loadSingleAccountDone = true;
+            state.loadSingleAccountError = null;
+            state.singleAccount = action.payload;
+        });
+        builder.addCase(asyncLoadSingleAccount.rejected, (state, action) => {
+            state.loadSingleAccountLoading = false;
+            state.loadSingleAccountDone = false;
+            state.loadSingleAccountError = action.payload;
+        });
+        builder.addCase(asyncRemoveSingleAccount.pending, (state, action) => {
+            state.removeSingleAccountLoading = true;
+            state.removeSingleAccountDone = false;
+            state.removeSingleAccountError = null;
+        });
+        builder.addCase(asyncRemoveSingleAccount.fulfilled, (state, action) => {
+            state.removeSingleAccountLoading = false;
+            state.removeSingleAccountDone = true;
+            state.removeSingleAccountError = null;
+        });
+        builder.addCase(asyncRemoveSingleAccount.rejected, (state, action) => {
+            state.removeSingleAccountLoading = false;
+            state.removeSingleAccountError = action.payload;
+            state.removeSingleAccountDone = false;
         })
     }
 });
