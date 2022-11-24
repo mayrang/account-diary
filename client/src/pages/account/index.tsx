@@ -98,9 +98,9 @@ const AccountList = () => {
             
             <div className="flex flex-col items-center overflow-auto  w-11/12 h-5/6 md:w-6/12  bg-white border rounded-lg shadow-2xl">
                 <div className="flex items-center border-b-2 justify-between w-full  p-3 ">
-                    <div onClick={clickPrev}  className="text-2xl">{"<"}</div>
+                    <div onClick={clickPrev}  className="text-2xl cursor-pointer">{"<"}</div>
                     <div  className="text-2xl md:pr-1 ">{calendarYear}년 {calendarMonth}월</div>
-                    <div onClick={clickNext} className="text-2xl">{">"}</div>
+                    <div onClick={clickNext} className="text-2xl cursor-pointer">{">"}</div>
                 </div>
                 <div className="w-full text-center py-1 text-lg font-semibold border-b-2">
                     잔액 : {balance}원

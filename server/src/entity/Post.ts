@@ -17,6 +17,7 @@ export class Post extends BaseEntity {
 
     @UpdateDateColumn()
     updateAt: Date;
+    
 
     @Column()
     userId: number;

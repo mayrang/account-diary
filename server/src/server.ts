@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 
 import userRoutes from "./routes/user";
 import accountRoutes from "./routes/account";
+import diaryRoutes from "./routes/diary";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 app.use("/api/user", userRoutes);
 app.use("/api/account", accountRoutes);
+app.use("/api/diary", diaryRoutes);
 
 let port = 4000;
 
