@@ -79,6 +79,8 @@ router.get("/loadSingle/:accountId", userMiddleware, async (req:Request, res:Res
         console.log(err);
         return res.status(500).json({error: "텅장 가져오는 과정에서 서버 에러"});
     }
-})
+});
+
+
 
 export default router;

@@ -24,7 +24,7 @@ const AccountEdit = () => {
     return (
         <>
         {singleAccount&&(
-            <AccountForm singleAccount={singleAccount as AccountObject}/>
+            <AccountForm isEdit={true}/>
         )}
         </>
     

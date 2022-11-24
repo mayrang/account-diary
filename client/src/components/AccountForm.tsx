@@ -2,20 +2,21 @@ import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { AccountObject } from "../pages/account";
 
-import { asyncAddSinglePost } from "../redux/reducers/accoutSlice";
+import { asyncAddSinglePost, asyncEditSingleAccount } from "../redux/reducers/accoutSlice";
 
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
 
 
-const AccountForm = ({singleAccount}: {
-    singleAccount: AccountObject | undefined | null
+const AccountForm = ({isEdit}: {
+    isEdit: boolean;
 }) => {
-    const [value, setValue] = useState(singleAccount?.value.toString()||"");
-    const [type, setType] = useState(singleAccount?.type||"");
-    const [content, setContent] = useState(singleAccount?.content||"");
+    const {addSingleAccountDone, addSingleAccountError, singleAccount} = useAppSelector((state) => state.account);
+    const [value, setValue] = useState((singleAccount as AccountObject | null)?.value.toString()||"");
+    const [type, setType] = useState((singleAccount as AccountObject | null)?.type||"");
+    const [content, setContent] = useState((singleAccount as AccountObject | null)?.content||"");
     const {user} = useAppSelector((state) => state.user);
-    const {addSingleAccountDone, addSingleAccountError} = useAppSelector((state) => state.account);
+
     const spendingRef = useRef<HTMLInputElement>(null);
     const incomeRef = useRef<HTMLInputElement>(null);
     const dispatch = useAppDispatch();
@@ -76,12 +77,24 @@ const AccountForm = ({singleAccount}: {
             alert("금액에는 숫자만 입력할 수 있습니다!");
             return;
         }
-        const data = {
-            type,
-            value,
-            content
+        
+        if(isEdit){
+            const data = {
+                type,
+                value,
+                content,
+                accountId : (singleAccount as AccountObject).accountId
+            }
+            dispatch(asyncEditSingleAccount(data));
+        }else{
+            const data = {
+                type,
+                value,
+                content
+            }
+            dispatch(asyncAddSinglePost(data));
         }
-        dispatch(asyncAddSinglePost(data));
+       
     }
    
    
@@ -93,11 +106,11 @@ const AccountForm = ({singleAccount}: {
                     <div className="mt-7 flex flex-col">
                         <h3 className=" text-lg font-semibold">유형 선택</h3>
                         <div className='w-1/3 flex items-center mt-2'>
-                            <input id="spending" name="spending" className='w-6 h-6 bg-gray-400 border-gray-300 text-blue-500' ref={spendingRef} onChange={handleType} type={"checkbox"}/>
+                            <input id="spending" name="spending" className='w-6 h-6 bg-gray-400 border-gray-300 text-blue-500' checked={type==="spending"} ref={spendingRef} onChange={handleType} type={"checkbox"}/>
                             <label className='ml-2 text-lg   font-medium text-gray-900' htmlFor='spending'>지출</label>
                         </div>
                         <div className='w-1/3 flex items-center mt-4'>
-                            <input id="income" name="income" className='w-6 h-6 bg-gray-400 border-gray-300 text-blue-500' ref={incomeRef} onChange={handleType} type={"checkbox"}/>
+                            <input id="income" name="income" className='w-6 h-6 bg-gray-400 border-gray-300 text-blue-500' checked={type==="income"} ref={incomeRef} onChange={handleType} type={"checkbox"}/>
                             <label className='ml-2 text-lg font-medium text-gray-900' htmlFor='income'>수입</label>
                         </div>
                     </div>

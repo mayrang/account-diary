@@ -110,6 +110,23 @@ export const asyncRemoveSingleAccount = createAsyncThunk(
             return rejectWithValue(err.response?.data?.error || "텅장 삭제 실패");
         }
     }
+);
+
+export const asyncEditSingleAccount = createAsyncThunk(
+    'account/asyncEditSingleAccount',
+    async ({accountId, type, content, value}:{accountId: number; type: string; content: string; value: string}, {rejectWithValue}) => {
+        try{
+            const result = await axios.put(`/account/editSingle/${accountId}`, {
+                type,
+                content,
+                value
+            });
+            return result.data;
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "텅장 수정 실패");
+        }
+    }
 )
 
 const accountSlice = createSlice({
@@ -179,6 +196,21 @@ const accountSlice = createSlice({
             state.removeSingleAccountLoading = false;
             state.removeSingleAccountError = action.payload;
             state.removeSingleAccountDone = false;
+        });
+        builder.addCase(asyncEditSingleAccount.pending, (state, action) => {
+            state.editSingleAccountLoading = true;
+            state.editSingleAccountDone = false;
+            state.editSingleAccountError = null;
+        });
+        builder.addCase(asyncEditSingleAccount.fulfilled, (state, action) => {
+            state.editSingleAccountLoading = false;
+            state.editSingleAccountDone = true;
+            state.editSingleAccountError = null;
+        });
+        builder.addCase(asyncEditSingleAccount.rejected, (state, action) => {
+            state.editSingleAccountLoading = false;
+            state.editSingleAccountDone = false;
+            state.editSingleAccountError = action.payload;
         })
     }
 });
