@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { AccountObject } from "../pages/account";
+import { AccountObject } from "../utils/interface";
 
 import { asyncAddSinglePost, asyncEditSingleAccount } from "../redux/reducers/accoutSlice";
 

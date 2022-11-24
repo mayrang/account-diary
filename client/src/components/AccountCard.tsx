@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AccountObject} from "../pages/account";
+import { AccountObject, UserObject} from "../utils/interface";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../redux/store";
@@ -7,13 +7,7 @@ import { asyncRemoveSingleAccount } from "../redux/reducers/accoutSlice";
 import { useRouter } from "next/router";
 
 
-interface UserObject {
-    userId: number;
-    email: string;
-    password: string;
-    nickname: string;
 
-}
 
 const AccountCard = ({data}:{data:AccountObject}) => {
     const {user} = useAppSelector((state) => state.user);

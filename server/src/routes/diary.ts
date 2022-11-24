@@ -33,6 +33,25 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
     }
 });
 
+router.get("/loadSingle/:postId", userMiddleware, async (req:Request, res:Response) => {
+    const postId = req.params.postId;
+    try{
+        const user = res.locals.user;
+        if(!user) return res.status(400).json({error: "유저 정보가 존재하지 않습니다."});
+        if(!postId || postId.trim() === "" || isNaN(Number(postId))) return res.status(400).json({error: "올바른 파라미터값이 아닙니다."});
+        const post = await Post.findOne({
+            where: {
+                postId: parseInt(postId)
+            }
+        });
+       
+        return res.json(post);
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({error: "일기 로드 과정에서 서버 에러"});
+    }
+})
+
 router.post("/create", userMiddleware, async (req:Request, res:Response) => {
     const {title, content} = req.body;
     try{

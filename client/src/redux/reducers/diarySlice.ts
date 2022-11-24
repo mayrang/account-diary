@@ -67,7 +67,7 @@ export const asyncLoadDiaryList = createAsyncThunk(
 );
 
 export const asyncAddSingleDiary = createAsyncThunk(
-    'diary/asyncSingleDiary',
+    'diary/asyncAddSingleDiary',
     async (data:object, {rejectWithValue}) => {
         try{
             const result = await axios.post("/diary/create", data);
@@ -77,7 +77,24 @@ export const asyncAddSingleDiary = createAsyncThunk(
             return rejectWithValue(err.response?.data?.error || "일기 추가 에러");
         }
     }
-)
+);
+
+export const asyncLoadSingleDiary = createAsyncThunk(
+    'diary/asyncLoadSingleDiary',
+    async ({postId, cookie}:{postId:string|string[]; cookie:string}, {rejectWithValue}) => {
+        try{
+            const result = await axios.get(`/diary/loadSingle/${postId}`, {
+                headers: {
+                    cookie
+                }
+            });
+            return result.data;
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "일기 로드 에러");
+        }
+    }
+);
 
 const diarySlice = createSlice({
     name: "diary",
@@ -116,6 +133,22 @@ const diarySlice = createSlice({
             state.addSingleDiaryDone = false;
             state.addSingleDiaryError = action.payload;
         });
+        builder.addCase(asyncLoadSingleDiary.pending, (state, action) => {
+            state.loadSingleDiaryLoading = true;
+            state.loadDiaryListDone = false;
+            state.loadDiaryListError = null;
+        });
+        builder.addCase(asyncLoadSingleDiary.fulfilled, (state, action) => {
+            state.loadSingleDiaryLoading = false;
+            state.loadSingleDiaryDone = true;
+            state.loadDiaryListError = null;
+            state.singleDiary = action.payload;
+        });
+        builder.addCase(asyncLoadSingleDiary.rejected, (state, action) => {
+            state.loadSingleDiaryLoading = false;
+            state.loadSingleDiaryDone = false;
+            state.loadDiaryListError = action.payload;
+        })
     }
 });
 

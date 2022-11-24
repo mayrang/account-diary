@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { AccountObject } from "..";
 import AccountForm from "../../../components/AccountForm";
 import { asyncLoadSingleAccount } from "../../../redux/reducers/accoutSlice";
 import { asyncUserLoadMyInfo } from "../../../redux/reducers/userSlice";

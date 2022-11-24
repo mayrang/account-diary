@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { AccountObject } from "../../utils/interface";
 import dayjs from "dayjs";
 import Header from "../../components/Header";
 import wrapper, { useAppSelector } from "../../redux/store";
@@ -8,15 +9,7 @@ import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
 import {  asyncLoadAccountList } from "../../redux/reducers/accoutSlice";
 import AccountCard from "../../components/AccountCard";
 
-export interface AccountObject  {
-    accountId: number;
-    value: number;
-    createAt: Date;
-    content: string;
-    type: string;
-    userId: number;
-    typeValue: number;
-}
+
 
 const AccountList = () => {
     const router = useRouter();

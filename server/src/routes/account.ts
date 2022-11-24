@@ -64,6 +64,7 @@ router.get("/loadSingle/:accountId", userMiddleware, async (req:Request, res:Res
     const {accountId} = req.params;
     try{
         const user = res.locals.user;
+        if(!user) return res.status(400).json({error: "유저 정보가 존재하지 않습니다."});
         if(!accountId || accountId.trim() === "" || isNaN(Number(accountId))) return res.status(400).json({error: "올바른 파라미터값이 아닙니다."});
         
         const account = await Account.findOne({
@@ -72,7 +73,7 @@ router.get("/loadSingle/:accountId", userMiddleware, async (req:Request, res:Res
             }
         });
 
-        if(account.userId !== user.userId) return res.status(400).json({error: "권한이 존재하지 않습니다."});
+       
         return res.json(account);
 
     }catch(err){

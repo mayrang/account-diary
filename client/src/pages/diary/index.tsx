@@ -6,7 +6,8 @@ import dayjs from "dayjs";
 import wrapper, { useAppSelector } from "../../redux/store";
 import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
 import { asyncLoadDiaryList } from "../../redux/reducers/diarySlice";
-import DiaryCard, { DiaryObject } from "../../components/DiaryCard";
+import DiaryCard from "../../components/DiaryCard";
+import { DiaryObject } from "../../utils/interface";
 
 const DiaryList = () => {
     const router = useRouter();
