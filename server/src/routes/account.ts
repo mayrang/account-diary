@@ -82,5 +82,61 @@ router.get("/loadSingle/:accountId", userMiddleware, async (req:Request, res:Res
 });
 
 
+router.put("/editSingle/:accountId", userMiddleware, async (req:Request, res:Response) => {
+    const {accountId} = req.params;
+    const {type, value, content} = req.body;
+    try{
+        const user = res.locals.user;
+        if(!user) return res.status(400).json({error: "유저 정보가 없습니다."})
+        if(type!=="spending" && type !== "income") return res.status(400).json({error: "올바른 Type이 아닙니다."});
+        if(content.trim() === "") return res.status(400).json({error: "내용을 입력해주세요."});
+        if(value.trim() === "") return res.status(400).json({error: "금액을 입력해주세요."});
+        if(isNaN(Number(value))) return res.status(400).json({error: "금액에는 숫자만 입력할 수 있습니다."});
+        if(!accountId || accountId.trim() === "" || isNaN(Number(accountId))) return res.status(400).json({error: "올바른 파라미터값이 아닙니다."});
+
+        const account = await Account.findOne({
+            where: {
+                accountId: parseInt(accountId)
+            }
+        });
+
+        if(account.userId !== user.userId) return res.status(400).json({error: "권한이 존재하지 않습니다."});
+
+        account.type = type;
+        account.content = content;
+        account.value = parseInt(value);
+
+        await account.save();
+
+        return res.send("텅장 수정 성공");
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({error: "텅장 수정과정에서 서버 에러"})
+    }
+});
+
+router.delete("/removeSingle/:accountId", userMiddleware,async (req:Request, res:Response) => {
+    const {accountId} = req.params;
+    try{
+        const user = res.locals.user;
+        if(!accountId || accountId.trim() === "" || isNaN(Number(accountId))) return res.status(400).json({error: "올바른 파라미터값이 아닙니다."});
+        if(!user) return res.status(400).json({error: "유저 정보가 없습니다."})
+        const account = await Account.findOne({
+            where: {
+                accountId: parseInt(accountId)
+            }
+        });
+
+        if(account.userId !== user.userId) return res.status(400).json({error: "권한이 존재하지 않습니다."});
+
+        await account.remove();
+
+        return res.send("텅장 삭제 성공");
+    }catch(err){
+        console.log(err);
+    }
+})
+
+
 
 export default router;

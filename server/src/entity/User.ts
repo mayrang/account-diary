@@ -24,10 +24,10 @@ export class User extends BaseEntity {
     @Column({unique: true})
     nickname: string;
 
-    @OneToMany(() => Post, (post) => post.user)
+    @OneToMany(() => Post, (post) => post.user, {cascade: true})
     posts: Post[];
 
-    @OneToMany(() => Account, (account) => account.user)
+    @OneToMany(() => Account, (account) => account.user, {cascade: true})
     accounts: Account[];
 
     @BeforeInsert()

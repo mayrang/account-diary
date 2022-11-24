@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 const AccountForm = ({isEdit}: {
     isEdit: boolean;
 }) => {
-    const {addSingleAccountDone, addSingleAccountError, singleAccount} = useAppSelector((state) => state.account);
+    const {addSingleAccountDone, addSingleAccountError, singleAccount, editSingleAccountDone, editSingleAccountError} = useAppSelector((state) => state.account);
     const [value, setValue] = useState((singleAccount as AccountObject | null)?.value.toString()||"");
     const [type, setType] = useState((singleAccount as AccountObject | null)?.type||"");
     const [content, setContent] = useState((singleAccount as AccountObject | null)?.content||"");
@@ -30,11 +30,18 @@ const AccountForm = ({isEdit}: {
         if(addSingleAccountDone){
             router.replace("/account");
         }
+        if(editSingleAccountDone){
+            router.replace("/account");
+        }
+        if(editSingleAccountError){
+            alert(editSingleAccountError);
+            return;
+        }
         if(addSingleAccountError){
             alert(addSingleAccountError);
             return;
         }
-    }, [addSingleAccountDone, addSingleAccountError, user]);
+    }, [addSingleAccountDone, addSingleAccountError, user, editSingleAccountDone, editSingleAccountError]);
    
     
    

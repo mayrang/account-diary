@@ -1,9 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AccountObject} from "../pages/account";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { asyncRemoveSingleAccount } from "../redux/reducers/accoutSlice";
+import { useRouter } from "next/router";
+
+
+interface UserObject {
+    userId: number;
+    email: string;
+    password: string;
+    nickname: string;
+
+}
+
 const AccountCard = ({data}:{data:AccountObject}) => {
-    return (
+    const {user} = useAppSelector((state) => state.user);
+    const {removeSingleAccountDone, removeSingleAccountError} = useAppSelector((state) => state.account);
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+
+    useEffect(() => {
+        if(removeSingleAccountDone){
+            router.reload();
+        }
+        if(removeSingleAccountError){
+            alert(removeSingleAccountError);
+            return;
+        }
+
+    }, [removeSingleAccountDone, removeSingleAccountError]);
+
+    const handleRemove = () => {
+        if((user as UserObject | null)?.userId !== data.userId){
+            alert("삭제 권한이 없습니다!!");
+            return;
+        }
+        dispatch(asyncRemoveSingleAccount(data.accountId.toString()));
+
+    }
+    return ( 
         <div className="p-3 border-b-4 w-full flex items-center justify-between ">
             <div className="flex flex-col">
                 <div className="text-sm">{dayjs(data.createAt).format("MM월 DD일 HH:mm")}</div>
@@ -11,8 +48,9 @@ const AccountCard = ({data}:{data:AccountObject}) => {
                 <small className="mt-1 text-gray-900">{data.content}</small>
             </div>
             <div className="flex items-center">
-                <button className="p-2 border rounded bg-white text-red-500">삭제</button>
-                <Link href={`/account/edit/${data.accountId}`} className="p-2  ml-3 border rounded bg-white ">수정</Link>
+                <Link href={`/account/edit/${data.accountId}`} className="p-2   border rounded bg-white ">수정</Link>
+                <button onClick={handleRemove} className="p-2 border rounded ml-3 bg-white text-red-500">삭제</button>
+                
             </div>
            
             

@@ -97,13 +97,9 @@ export const asyncLoadSingleAccount = createAsyncThunk(
 
 export const asyncRemoveSingleAccount = createAsyncThunk(
     'account/asyncRemoveSingleAccount',
-    async ({accountId, cookie} : {accountId:string|string[]; cookie:string;}, {rejectWithValue}) => {
+    async (accountId:string, {rejectWithValue}) => {
         try{
-            const result = await axios.delete(`account/removeSingle/${accountId}`, {
-                headers: {
-                    cookie
-                }
-            });
+            const result = await axios.delete(`account/removeSingle/${accountId}`);
             return result.data;
         }catch(err:any){
             console.log(err);

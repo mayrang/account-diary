@@ -21,7 +21,7 @@ export class Post extends BaseEntity {
     @Column()
     userId: number;
 
-    @ManyToOne(() => User, (user) => user.posts)
+    @ManyToOne(() => User, (user) => user.posts, {onDelete: "CASCADE"})
     @JoinColumn({name: "userId", referencedColumnName: "userId"})
     user: User;
 
