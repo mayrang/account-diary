@@ -45,7 +45,11 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
                     new Date(parseInt(year as string), parseInt(month as string), 0),
                 ),
                 userId: user.userId
+            },
+            order: {
+                createAt: "DESC"
             }
+            
         });
         console.log(instanceToPlain(accountList));
         // expose 포함 시키고 싶을때는 find 후 instanceToPlain

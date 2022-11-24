@@ -6,8 +6,9 @@ import Header from "../../components/Header";
 import wrapper, { useAppSelector } from "../../redux/store";
 import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
 import {  asyncLoadAccountList } from "../../redux/reducers/accoutSlice";
+import AccountCard from "../../components/AccountCard";
 
-type AccountList = {
+export interface AccountList  {
     accountId: number;
     value: number;
     createAt: Date;
@@ -101,13 +102,11 @@ const AccountList = () => {
                     <div  className="text-2xl md:pr-1 ">{calendarYear}년 {calendarMonth}월</div>
                     <div onClick={clickNext} className="text-2xl">{">"}</div>
                 </div>
-                <div className="text-lg">
-                    잔액 : {balance}
+                <div className="w-full text-center py-1 text-lg font-semibold border-b-2">
+                    잔액 : {balance}원
                 </div>
                 {accountList.map((it:any) => (
-                    <div key={it.accountId}>
-                        {it.typeValue} {it.value}
-                    </div>
+                  <AccountCard key={it.accountId} data={it} /> 
                 ))}
             </div>
             <Link href={"/account/create"} className="fixed right-5  bottom-3  md:right-1/4  border p-3 bg-white rounded">
