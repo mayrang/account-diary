@@ -7,3 +7,4 @@
 /client/.env.development
 /client/.env.production
 /server/.env.production
+diary-account.pem
