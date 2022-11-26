@@ -51,7 +51,7 @@ const DiaryCard = ({data}: {
             </div>
             <div className="flex items-center">
                 <button onClick={handleEdit} className="p-2   border rounded bg-white ">수정</button>
-                <button onClick={handleRemove} className="p-2 border rounded ml-3 bg-white text-red-500 hover:bg-red-500 hover:text-white active:bg-red-500">삭제</button>
+                <button onClick={handleRemove} className="p-2 border rounded ml-3 bg-white text-red-500 hover:bg-red-500 hover:text-white ">삭제</button>
                 
             </div>
        
