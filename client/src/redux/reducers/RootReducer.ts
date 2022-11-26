@@ -1,7 +1,7 @@
 import {combineReducers, CombinedState, AnyAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import { HYDRATE } from "next-redux-wrapper";
-import accountSlice, { AccountState } from "./accoutSlice";
+import accountSlice, { AccountState } from "./accountSlice";
 import diarySlice, { DiaryState } from "./diarySlice";
 import userSlice, { UserState } from "./userSlice";
 

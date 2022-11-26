@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import Header from "../../components/Header";
 import wrapper, { useAppSelector } from "../../redux/store";
 import { asyncUserLoadMyInfo } from "../../redux/reducers/userSlice";
-import {  asyncLoadAccountList } from "../../redux/reducers/accoutSlice";
+import {  asyncLoadAccountList } from "../../redux/reducers/accountSlice";
 import AccountCard from "../../components/AccountCard";
 
 

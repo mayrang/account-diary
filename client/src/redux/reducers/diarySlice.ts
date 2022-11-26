@@ -96,6 +96,35 @@ export const asyncLoadSingleDiary = createAsyncThunk(
     }
 );
 
+export const asyncEditSingleDiary = createAsyncThunk(
+    'diary/asyncEditSingleDiary',
+    async ({postId, title, content}:{postId: number; title:string; content:string;}, {rejectWithValue}) => {
+        try{
+            const result = await axios.put(`/diary/editSingle/${postId}`, {
+                title,
+                content
+            });
+            return result.data;
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "일기 수정 에러");
+        }
+    }
+);
+
+export const asyncRemoveSingleDiary = createAsyncThunk(
+    'diary/asyncRemoveSingleDiary',
+    async (postId:number, {rejectWithValue}) => {
+        try{
+            const result = await axios.delete(`/diary/removeSingle/${postId}`);
+            return result.data;
+        }catch(err:any){
+            console.log(err);
+            return rejectWithValue(err.response?.data?.error || "일기 삭제 에러");
+        }
+    }
+)
+
 const diarySlice = createSlice({
     name: "diary",
     initialState,
@@ -148,6 +177,36 @@ const diarySlice = createSlice({
             state.loadSingleDiaryLoading = false;
             state.loadSingleDiaryDone = false;
             state.loadDiaryListError = action.payload;
+        });
+        builder.addCase(asyncEditSingleDiary.pending, (state, action) => {
+            state.editSingleDiaryLoading = true;
+            state.editSingleDiaryDone = false;
+            state.editSingleDiaryError = null;
+        });
+        builder.addCase(asyncEditSingleDiary.fulfilled, (state, action) => {
+            state.editSingleDiaryLoading = false;
+            state.editSingleDiaryDone = true;
+            state.editSingleDiaryError = null;
+        });
+        builder.addCase(asyncEditSingleDiary.rejected, (state, action) => {
+            state.editSingleDiaryLoading = false;
+            state.editSingleDiaryDone = false;
+            state.editSingleDiaryError = action.payload;
+        });
+        builder.addCase(asyncRemoveSingleDiary.pending, (state, action) => {
+            state.removeSingleDiaryLoading = true;
+            state.removeSingleDiaryDone = false;
+            state.removeSingleDiaryError = null;
+        });
+        builder.addCase(asyncRemoveSingleDiary.fulfilled, (state, action) => {
+            state.removeSingleDiaryDone = true;
+            state.removeSingleDiaryLoading = false;
+            state.removeSingleDiaryError = null;
+        });
+        builder.addCase(asyncRemoveSingleDiary.rejected, (state, action) => {
+            state.removeSingleDiaryLoading = false;
+            state.removeSingleDiaryDone = false;
+            state.removeSingleDiaryError = action.payload;
         })
     }
 });

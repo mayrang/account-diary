@@ -1,15 +1,17 @@
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
-import { asyncAddSingleDiary } from "../redux/reducers/diarySlice";
+import { asyncAddSingleDiary, asyncEditSingleDiary } from "../redux/reducers/diarySlice";
 import { useAppDispatch, useAppSelector } from "../redux/store";
+import { DiaryObject } from "../utils/interface";
 
 const DiaryForm = ({isEdit}: {
     isEdit: boolean;
 }) => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const {addSingleDiaryDone, addSingleDiaryError, singleDiary, editSingleDiaryDone, editSingleDiaryError} = useAppSelector((state) => state.diary);
+    const [title, setTitle] = useState((singleDiary as DiaryObject | null)?.title||"");
+    const [content, setContent] = useState((singleDiary as DiaryObject | null)?.content||"");
     const dispatch = useAppDispatch();
-    const {addSingleDiaryDone, addSingleDiaryError} = useAppSelector((state) => state.diary);
+   
     const {user} = useAppSelector((state) => state.user);
     const router = useRouter();
 
@@ -24,7 +26,15 @@ const DiaryForm = ({isEdit}: {
             alert(addSingleDiaryError);
             return;
         }
-    }, [user, addSingleDiaryDone, addSingleDiaryError])
+        if(editSingleDiaryDone){
+            router.replace("/diary");
+
+        }
+        if(editSingleDiaryError){
+            alert(editSingleDiaryError);
+            return;
+        }
+    }, [user, addSingleDiaryDone, addSingleDiaryError, editSingleDiaryDone, editSingleDiaryError])
 
     const handleSubmit = (e:FormEvent) => {
         e.preventDefault();
@@ -37,7 +47,12 @@ const DiaryForm = ({isEdit}: {
             return;
         }
         if(isEdit){
-            return;
+            const data = {
+                title,
+                content,
+                postId : (singleDiary as DiaryObject).postId 
+            }
+            dispatch(asyncEditSingleDiary(data));
         }else{
             const data = {
                 title,

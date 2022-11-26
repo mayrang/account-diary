@@ -35,9 +35,10 @@ export default function Home() {
                     <Link href={"/diary"} className="py-2 px-4 ml-8 bg-white rounded border">일기</Link>
                   </>
                 ):(
-                  <>
-                  <Link href={"/register"} className="p-2 bg-white rounded border">회원가입</Link>
+                  <> 
                   <Link href={"/login"} className="py-2 px-4 ml-8 bg-white rounded border">로그인</Link>
+                  <Link href={"/register"} className="p-2 bg-white rounded border">회원가입</Link>
+                 
                   </>
                 )}
                 

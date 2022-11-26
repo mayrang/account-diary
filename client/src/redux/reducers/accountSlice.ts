@@ -97,7 +97,7 @@ export const asyncLoadSingleAccount = createAsyncThunk(
 
 export const asyncRemoveSingleAccount = createAsyncThunk(
     'account/asyncRemoveSingleAccount',
-    async (accountId:string, {rejectWithValue}) => {
+    async (accountId:number, {rejectWithValue}) => {
         try{
             const result = await axios.delete(`account/removeSingle/${accountId}`);
             return result.data;

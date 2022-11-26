@@ -101,6 +101,8 @@ router.put("/editSingle/:accountId", userMiddleware, async (req:Request, res:Res
             }
         });
 
+        if(!account) return res.status(400).json({error: "해당하는 텅장이 없습니다."});
+
         if(account.userId !== user.userId) return res.status(400).json({error: "권한이 존재하지 않습니다."});
 
         account.type = type;

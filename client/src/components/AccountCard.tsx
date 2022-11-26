@@ -3,7 +3,7 @@ import { AccountObject, UserObject} from "../utils/interface";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-import { asyncRemoveSingleAccount } from "../redux/reducers/accoutSlice";
+import { asyncRemoveSingleAccount } from "../redux/reducers/accountSlice";
 import { useRouter } from "next/router";
 
 
@@ -31,8 +31,16 @@ const AccountCard = ({data}:{data:AccountObject}) => {
             alert("삭제 권한이 없습니다!!");
             return;
         }
-        dispatch(asyncRemoveSingleAccount(data.accountId.toString()));
+        dispatch(asyncRemoveSingleAccount(data.accountId));
 
+    }
+    
+    const handleEdit = () => {
+        if((user as UserObject | null)?.userId !== data.userId){
+            alert("삭제 권한이 없습니다!!");
+            return;
+        }
+        router.push(`/account/edit/${data.accountId}`);
     }
     return ( 
         <div className="p-3 border-b-4 w-full flex items-center justify-between ">
@@ -42,8 +50,8 @@ const AccountCard = ({data}:{data:AccountObject}) => {
                 <small className="mt-1 text-gray-900">{data.content}</small>
             </div>
             <div className="flex items-center">
-                <Link href={`/account/edit/${data.accountId}`} className="p-2   border rounded bg-white ">수정</Link>
-                <button onClick={handleRemove} className="p-2 border rounded ml-3 bg-white text-red-500">삭제</button>
+                <button className="p-2   border rounded bg-white ">수정</button>
+                <button onClick={handleRemove} className="p-2 border rounded ml-3 bg-white text-red-500 hover:bg-red-500 hover:text-white">삭제</button>
                 
             </div>
            
