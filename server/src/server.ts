@@ -22,7 +22,7 @@ if(process.env.NODE_ENV === 'production'){
     
 }
 app.use(cors({
-    origin: ["http://localhost:3000", "http://43.200.244.102"],
+    origin: true,
     credentials: true
 }));
 app.use(express.json());
