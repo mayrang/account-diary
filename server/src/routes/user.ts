@@ -54,7 +54,7 @@ router.post("/login", async (req:Request, res:Response) => {
         if(!matchPassword) return res.status(400).json({password: "비밀번호가 틀렸습니다."});
         console.log(email);
         const token = jwt.sign({email}, process.env.JWT_SECRET_KEY);
-        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60 * 30, path: "/", domain: "http://43.200.244.102/"}));
+        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60 * 30, path: "/", domain: "http://43.200.244.102/", secure: true, sameSite: "none"}));
         res.status(200).json({token, user});
     }catch(err:any){
         console.log(err);
