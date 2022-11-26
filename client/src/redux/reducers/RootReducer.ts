@@ -11,7 +11,7 @@ export interface RootStates {
     diary: DiaryState;
 }
 
-axios.defaults.baseURL = "http://localhost:4000/api";
+axios.defaults.baseURL = "http://api.mayrang.shop";
 axios.defaults.withCredentials = true;
 
 const rootReducer = (state:RootStates, action:AnyAction):CombinedState<RootStates>=> {
