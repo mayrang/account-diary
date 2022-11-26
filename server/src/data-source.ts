@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
     port: 3306,
     username: "root",
     password: process.env.DB_PASSWORD,
-    database: "account-diary",
+    database: "account_diary",
     synchronize: true,
     migrationsRun: true,
     logging: false,
