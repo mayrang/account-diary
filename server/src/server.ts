@@ -4,7 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { AppDataSource } from "./data-source";
-
+import hpp from "hpp";
+import helmet from "helmet";
 import userRoutes from "./routes/user";
 import accountRoutes from "./routes/account";
 import diaryRoutes from "./routes/diary";
@@ -12,12 +13,20 @@ import diaryRoutes from "./routes/diary";
 const app = express();
 
 dotenv.config();
-app.use(express.json());
-app.use(morgan("dev"));
+if(process.env.NODE_ENV === 'production'){
+    app.use(morgan("combined"));
+    app.use(hpp());
+    app.use(helmet());
+}else{
+    app.use(morgan("dev"));
+    
+}
 app.use(cors({
     origin: ["http://localhost:3000"],
     credentials: true
 }));
+app.use(express.json());
+
 app.use(cookieParser());
 
 app.use("/api/user", userRoutes);
