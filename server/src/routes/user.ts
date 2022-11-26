@@ -54,7 +54,7 @@ router.post("/login", async (req:Request, res:Response) => {
         if(!matchPassword) return res.status(400).json({password: "비밀번호가 틀렸습니다."});
         console.log(email);
         const token = jwt.sign({email}, process.env.JWT_SECRET_KEY);
-        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60 * 30, path: "/", secure: false, sameSite: "none"}));
+        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60 * 30, path: "/", secure: false, domain: process.env.NODE_ENV === "production" && '.mayrang.shop'}));
         res.status(200).json({token, user});
     }catch(err:any){
         console.log(err);

@@ -22,7 +22,7 @@ if(process.env.NODE_ENV === 'production'){
     
 }
 app.use(cors({
-    origin: true,
+    origin: ["http://localhost:3000", "http://mayrang.shop"],
     credentials: true
 }));
 app.use(express.json());
