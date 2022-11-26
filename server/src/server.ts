@@ -22,7 +22,7 @@ if(process.env.NODE_ENV === 'production'){
     
 }
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "43.200.244.102"],
     credentials: true
 }));
 app.use(express.json());
@@ -33,7 +33,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/account", accountRoutes);
 app.use("/api/diary", diaryRoutes);
 
-let port = 4000;
+let port = 80;
 
 
 app.listen(port, async () => {
