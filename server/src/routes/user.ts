@@ -54,7 +54,7 @@ router.post("/login", async (req:Request, res:Response) => {
         if(!matchPassword) return res.status(400).json({password: "비밀번호가 틀렸습니다."});
         console.log(email);
         const token = jwt.sign({email}, process.env.JWT_SECRET_KEY);
-        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60 * 30, path: "/"}));
+        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60 * 30, path: "/", domain: "http://43.200.244.102/"}));
         res.status(200).json({token, user});
     }catch(err:any){
         console.log(err);
@@ -63,7 +63,7 @@ router.post("/login", async (req:Request, res:Response) => {
 });
 
 router.get("/me", userMiddleware, async (_:Request, res:Response) => {
-    try{
+    try{    
         const user = res.locals.user;
         if(!user) return res.status(400).json({error: "해당하는 유저가 존재하지 않습니다."});
         return res.status(200).json(user);
