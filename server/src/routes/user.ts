@@ -75,7 +75,7 @@ router.get("/me", userMiddleware, async (_:Request, res:Response) => {
 
 router.get("/logout",  async (_:Request, res:Response) => {
     try{
-        res.set("Set-Cookie", cookie.serialize("token", "", {httpOnly: true, sameSite: "strict", expires: new Date(0), path: "/"}));
+        res.set("Set-Cookie", cookie.serialize("token", "", {httpOnly: true,  path: "/", secure: false, domain: process.env.NODE_ENV === "production" && '.mayrang.shop', expires: new Date(0)}));
         return res.send("로그아웃 성공");
     }catch(err:any){
         console.log(err);

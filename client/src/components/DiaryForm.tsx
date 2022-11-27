@@ -68,7 +68,7 @@ const DiaryForm = ({isEdit}: {
             <div className="bg-white p-6 border rounded shadow-2xl w-10/12 md:w-8/12 h-auto">
                 <form onSubmit={handleSubmit}>
                     <h2 className="text-xl font-extrabold">일기</h2>
-                    <div className="mt-7 flex ">
+                    <div className="mt-7 flex max-md:flex-col">
                         <label htmlFor="title" className="text-lg font-semibold">제목</label>
                         <input id="title" className="border bg-gray-50 rounded ml-3 w-11/12" value={title} onChange={(e) => setTitle(e.target.value)}/>
 
