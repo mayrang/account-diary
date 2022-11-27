@@ -72,7 +72,7 @@ const Register = () => {
         <>
         <Header />
         <div className="w-full h-screen flex justify-center bg-gray-200 items-center">
-            <div className="flex flex-col   p-6 bg-white rounded-lg w-11/12 h-4/6 md:w-6/12 shadow-2xl">
+            <div className="flex flex-col   p-6 bg-white rounded-lg w-11/12 h-auto md:w-6/12 shadow-2xl">
                 <form onSubmit={handleSubmit}>
                     <h2 className="text-lg font-extrabold">회원가입</h2>
                     <div className="mt-7 flex flex-col justify-center">
