@@ -53,7 +53,7 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
             
         });
         console.log(   new Date(parseInt(year as string), parseInt(month as string)-1, 1),
-        new Date(parseInt(year as string), parseInt(month as string), 0));
+        new Date(parseInt(year as string), parseInt(month as string), 1));
         console.log(accountList);
         console.log(instanceToPlain(accountList));
         // expose 포함 시키고 싶을때는 find 후 instanceToPlain
