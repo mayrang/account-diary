@@ -35,6 +35,7 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
     const {year, month} = req.query;
     try{
         const user = res.locals.user;
+        const koreaTimeDiff = 9 * 60 * 60 * 1000
         if(!user) return res.status(400).json({error: "유저 정보가 없습니다."})
         if(isNaN(Number(year)) || isNaN(Number(month))) return res.status(400).json({error: "query string 에러"});
 
@@ -51,6 +52,9 @@ router.get("/loadList", userMiddleware, async (req:Request, res:Response) => {
             }
             
         });
+        console.log(   new Date(parseInt(year as string), parseInt(month as string)-1, 1),
+        new Date(parseInt(year as string), parseInt(month as string), 0));
+        console.log(accountList);
         console.log(instanceToPlain(accountList));
         // expose 포함 시키고 싶을때는 find 후 instanceToPlain
         return res.status(200).send(instanceToPlain(accountList));
